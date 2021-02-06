@@ -6,19 +6,19 @@ LMA = 0x0100000;
 
 SECTIONS
 {
-    . = LMA;
+    . = 1M;
     
-     .multiboot : {
+     .multiboot ALIGN(0x1000): {
         *(.multiboot)
      }
 
     .text : {
-        *(.text)
+        *(.text*)
+        *(.rodata)
     }
 
     .data : {
         *(.data)
-        *(.rodata)
     }
 
     .bss : {
@@ -26,6 +26,7 @@ SECTIONS
     }   
 
     /DISCARD/ : { 
+        *(.fni_array*)
         *(.comment) 
     }
 }

@@ -3,6 +3,7 @@ MAGIC equ 0x1badb002
 FLAGS equ ((1<<0) | (1<<1))
 CHECKSUM equ -(MAGIC + FLAGS)
 
+align 4
 section .multiboot
     dd MAGIC
     dd FLAGS
