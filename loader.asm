@@ -24,7 +24,7 @@ _loader:
         jmp loop
 
 section .bss
-stack resd STACK_SIZE
+stack resd 1024*1024*10
 stack_pointer:
 
 

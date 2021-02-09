@@ -1,5 +1,6 @@
 CPP = g++
-CPPPARAMS = -m32
+CPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore 
+objects =  code/kernel.o code/gdt/gdt.o
 
 ASM = nasm
 ASMFLAGS = -f elf
@@ -8,8 +9,8 @@ LD = ld
 LDPARAMS = -melf_i386 -T linker.ld
 
 GRUB_CONFIG ='\
-settimeout=0\n\
-setdefault=0\n\
+set timeout=0\n\
+set default=0\n\
 \n\
 menuentry "My Operating System" {\n\
 	multiboot /boot/kernel.bin\n\
@@ -17,14 +18,13 @@ menuentry "My Operating System" {\n\
 }\n\
 '
 
-kernel.o: code/kernel.cpp
+%.o: %.cpp
 	$(CPP) $(CPPPARAMS) -o $@ -c $^
-
 
 loader.o: loader.asm
 	$(ASM) $(ASMFLAGS) $^ -o $@
 
-install : kernel.o loader.o
+install : loader.o $(objects)
 	$(LD) $(LDPARAMS) -o kernel.bin $^
 
 run: install
@@ -36,5 +36,5 @@ run: install
 	VirtualBox --startvm "MyOS" &
 
 clear: 
-	rm -f *.o kernel.bin kernel.iso
+	find . -name "*.o" -type f -delete
 	rm -rf iso

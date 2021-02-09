@@ -1,6 +1,9 @@
-static unsigned short *videoMemory = (unsigned short *)0xb8000;
+#include "types.h"
+#include "./gdt/gdt.h"
 
-void print(const char *message)
+static unsigned short *videoMemory = (uint16_t *)0xb8000;
+
+void print(const int8_t *message)
 {
     for (int i = 0; message[i]; i++)
     {
@@ -8,7 +11,8 @@ void print(const char *message)
     }
 }
 
-extern "C" void kernelMain(void *multiboot_structure, unsigned int magic_number)
+extern "C" void kernelMain(void *multiboot_structure, uint32_t magic_number)
 {
     print("Hello World");
+    GlobalDescriptorTable globalDescriptorTable;
 }
